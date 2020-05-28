@@ -1,0 +1,24 @@
+{
+  "name": "viewrite-server",
+  "version": "1.0.0",
+  "description": "Server for the chat application",
+  "main": "index.js",
+  "repository": "https://github.com/Gavrilajava/viewrite.git",
+  "author": "Georgii Gavrilchik",
+  "license": "MIT",
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpileOnly ./src/server.ts",
+    "prod": "tsc && node ./dist/server.js"
+  },
+  "dependencies": {
+    "@types/express": "^4.17.6",
+    "@types/socket.io": "^2.1.8",
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0",
+    "tsv": "^0.2.0",
+    "typescript": "^3.9.3"
+  },
+  "devDependencies": {
+    "ts-node-dev": "^1.0.0-pre.44"
+  }
+}
