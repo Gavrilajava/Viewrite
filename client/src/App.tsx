@@ -1,33 +1,33 @@
 
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {BrowserRouter, Route, Switch} from 'react-router-dom'
+import './App.scss';
 import { ChatMessage, ChatState } from './types';
 import { ChatContext } from './ChatContext';
+import Chat from './components/Chat'
+import Settings from './components/Settings'
+import Navbar from './components/Navbar';
 
 class App extends React.Component {
+
   static contextType = ChatContext;
 
   state: ChatState = {
-    messages: [
-      {
-        message: 'Welcome! Type a message and press Send Message to continue the chat.',
-        author: 'Bot'
+      messages: [],
+      settings: {
+        user: "Billy",
+        darkTheme: true,
+        clock24hours: false,
+        sendByEnter: false
       }
-    ],
-    input: ''
-  }
+    }
+ 
 
   componentDidMount () {
-
-    //initiate socket connection
     this.context.init();
-
-    const observable = this.context.onMessage();
-
+    const observable = this.context.onMessage()
     observable.subscribe((m: ChatMessage) => {
       let messages = this.state.messages;
-
       messages.push(m);
       this.setState({ messages: messages });
     });
@@ -38,54 +38,32 @@ class App extends React.Component {
   }
 
   render () {
-
-    const updateInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
-      this.setState({ input: e.target.value });
-    }
-
-    const handleMessage = (): void => {
-
-      const author: string = 'Ross';
-
-      if (this.state.input !== '') {
+    const handleMessage = (input: string): void => {
+      if (input !== '') {
         this.context.send({
-          message: this.state.input,
-          author: author
+          message: input,
+          author: this.state.settings.user,
+          sent: new Date()
         });
-        this.setState({ input: '' });
       }
     };
 
-    let msgIndex = 0;
-    return (
-      <div className="App">
-        <img src={logo} className="App-logo" alt="logo" />
+    const {settings} = this.state
 
-        <div className="App-chatbox">
-          {this.state.messages.map((msg: ChatMessage) => {
-            msgIndex++;
-            return (
-              <div key={msgIndex}>
-                <p>{msg.author}</p>
-                <p>
-                  {msg.message}
-                </p>
-              </div>
-            );
-          })}
+    const changeSettings = (obj: Object) => {
+      this.setState({...settings, obj})
+    }
+
+    return (
+      <BrowserRouter>
+        <div className = {settings.darkTheme ? "App bgrd-dark" : "App bgrd-light"}>
+          <Navbar />
+          <Switch>
+            <Route exact path="/" render={(routerProps) => <Chat {...routerProps} messages = {this.state.messages} handleMessage = {handleMessage} settings = {settings}/>}/>
+            <Route exact path="/settings" render={(routerProps) => <Settings {...routerProps} settings = {settings} changeSettings = {changeSettings}/> }/>
+          </Switch>
         </div>
-        <input
-          className="App-Textarea"
-          placeholder="Type your messsage here..."
-          onChange={updateInput}
-          value={this.state.input}
-        />
-        <p>
-          <button onClick={() => { handleMessage() }}>
-            Send Message
-          </button>
-        </p>
-      </div>
+      </BrowserRouter>
     );
   }
 }

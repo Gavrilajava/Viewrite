@@ -1,9 +1,17 @@
 export interface ChatMessage {
   author: string;
   message: string;
+  sent: Date;
 }
 
 export interface ChatState {
-  input: string;
   messages: ChatMessage[];
+  settings: AppSettings
+}
+
+export interface AppSettings {
+  user: string,
+  darkTheme: boolean,
+  clock24hours: boolean,
+  sendByEnter: boolean
 }

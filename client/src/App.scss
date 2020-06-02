@@ -1,0 +1,110 @@
+
+
+.App {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.bgrd-light {
+  background-color: #2ECC40;
+}
+
+.bgrd-dark {
+  background-color: #001f3f;
+}
+
+
+.chatbox {
+  margin: 0 auto;
+  height: 100vh;
+  width: 50vw;
+  overflow-y: scroll;
+  text-align: left;
+}
+
+.inputContainer {
+  display: block;
+  position: absolute;
+  bottom: 0;
+  width: inherit
+}
+
+.chatbox input {
+  background: none;
+  border: 1px solid #fff;
+  border-radius: 0.25em;
+  padding: 0.5em;
+  width: 92%;
+  font-size: 1.2em;
+}
+
+.chtDark input {
+  border-color: #fff;
+  color: inherit
+} 
+
+.chtLight input {
+  border-color: #001f3f;
+  color: inherit
+}
+
+.chtDark {
+  color: bisque;
+}
+
+.chtLight {
+  color: #001f3f;
+}
+
+.chatbox button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  text-decoration: none;
+  height: 1.5em;
+  width: 1.5em;
+  display: block;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin: 0.5em;
+  padding: 10px;
+}
+
+
+.chtDark button {
+  background-image: url(/plane-white.svg);
+} 
+
+.chtLight button {
+  background-image: url(/plane-black.svg);
+}
+
+.message {
+  background-color: thistle;
+  width: fit-content;
+  padding: 5px 10px;
+  border-radius: 0.4em;
+}
+
+.chtDark .message {
+  background-color: thistle;
+  color: darkblue;
+} 
+
+.chtLight .message {
+  background-color: darkblue;
+  color: yellowgreen;
+}
+
+.messageContainer p, .messageContainer span {
+  font-size: 0.5em;
+  margin: 2px;
+}
+
+
+
+
