@@ -81,17 +81,18 @@ class App extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
-
-const mapStateToProps = (state) => {
-  return {user: state.UserReducer.user}
+const mapStateToProps = (state: ChatState) => {
+  return {state: state}
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    logOut: (() => dispatch({type: "logout"})),
-    addAvatar: ((avatar) => dispatch({type: "add_avatar", avatar: avatar}))
+    setSettings: ((settings: AppSettings) => dispatch({type: "setSettings", settings: settings}))
   }
 }
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
+
 
 
