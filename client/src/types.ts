@@ -15,3 +15,8 @@ export interface AppSettings {
   clock24hours: boolean,
   sendByEnter: boolean
 }
+
+export interface Action {
+  type: string,
+  settings: AppSettings
+}

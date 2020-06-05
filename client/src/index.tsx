@@ -5,8 +5,10 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { SocketService } from './SocketService';
 import { ChatContext } from './ChatContext';
+import { AppSettings } from './types';
 
 const chat = new SocketService();
+
 
 ReactDOM.render(
   <ChatContext.Provider value={chat}>

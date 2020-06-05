@@ -12,6 +12,11 @@ const Chat: React.FC<ChatProps> = ({messages, handleMessage, settings}) => {
 
   const [input, setInput] = useState<string>('')
 
+  const handleClick = () => {
+    handleMessage(input)
+    setInput('')
+  }
+
   return(
     <div  className = {settings.darkTheme? "chatbox chtDark" : "chatbox chtLight"}>
       {messages.map((msg: ChatMessage, index: number) => {
@@ -23,23 +28,15 @@ const Chat: React.FC<ChatProps> = ({messages, handleMessage, settings}) => {
           </div>
         );
       })}
-    <div className="inputContainer">
-      <input
-        className = {settings.darkTheme? "dark" : "light"}
-        placeholder="Type your messsage here..."
-        onChange={ (e: React.ChangeEvent<HTMLInputElement>): void => setInput(e.target.value)}
-        value={input}
-      />
-      <button
-        onClick={() => handleMessage(input)}
-        className = {settings.darkTheme? "darkBtn" : "lightBtn"}>
-      </button>
+      <div className="inputContainer">
+        <input
+          placeholder="Type your messsage here..."
+          onChange={ (e: React.ChangeEvent<HTMLInputElement>): void => setInput(e.target.value)}
+          value={input}
+        />
+        <button onClick={handleClick}/>
+      </div>
     </div>
-    
-
-    </div>
-
-
   )
 
 }

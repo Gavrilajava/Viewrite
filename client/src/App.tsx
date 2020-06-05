@@ -2,7 +2,8 @@
 import React from 'react';
 import {BrowserRouter, Route, Switch} from 'react-router-dom'
 import './App.scss';
-import { ChatMessage, ChatState } from './types';
+import { ChatMessage, ChatState, AppSettings } from './types';
+import {connect} from 'react-redux'
 import { ChatContext } from './ChatContext';
 import Chat from './components/Chat'
 import Settings from './components/Settings'
@@ -12,25 +13,36 @@ class App extends React.Component {
 
   static contextType = ChatContext;
 
-  state: ChatState = {
+
+    // let initialSettings
+    // if (localStorage.settings){
+    //   initialSettings =  JSON.parse(localStorage.settings)
+    // }
+    // else {
+    //   initialSettings = props
+    // }
+    state = {
       messages: [],
       settings: {
-        user: "Billy",
+        user: "Billy2",
         darkTheme: true,
         clock24hours: false,
         sendByEnter: false
       }
     }
- 
+  
 
   componentDidMount () {
     this.context.init();
     const observable = this.context.onMessage()
     observable.subscribe((m: ChatMessage) => {
-      let messages = this.state.messages;
+      let messages: ChatMessage[] = this.state.messages;
       messages.push(m);
       this.setState({ messages: messages });
     });
+    if (localStorage.settings){
+      this.setState({settings: JSON.parse(localStorage.settings)})
+    }
   }
 
   componentWillUnmount () {
@@ -48,18 +60,19 @@ class App extends React.Component {
       }
     };
 
-    const {settings} = this.state
-
-    const changeSettings = (obj: Object) => {
-      this.setState({...settings, obj})
+    const changeSettings = (settings: AppSettings) => {
+      localStorage.settings = JSON.stringify(settings)
+      this.setState({settings})
     }
+    
+    const {settings, messages} = this.state
 
     return (
       <BrowserRouter>
         <div className = {settings.darkTheme ? "App bgrd-dark" : "App bgrd-light"}>
           <Navbar />
           <Switch>
-            <Route exact path="/" render={(routerProps) => <Chat {...routerProps} messages = {this.state.messages} handleMessage = {handleMessage} settings = {settings}/>}/>
+            <Route exact path="/" render={(routerProps) => <Chat {...routerProps} messages = {messages} handleMessage = {handleMessage} settings = {settings}/>}/>
             <Route exact path="/settings" render={(routerProps) => <Settings {...routerProps} settings = {settings} changeSettings = {changeSettings}/> }/>
           </Switch>
         </div>
@@ -68,4 +81,17 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default connect(mapStateToProps, mapDispatchToProps)(App);
+
+const mapStateToProps = (state) => {
+  return {user: state.UserReducer.user}
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    logOut: (() => dispatch({type: "logout"})),
+    addAvatar: ((avatar) => dispatch({type: "add_avatar", avatar: avatar}))
+  }
+}
+
+
